@@ -15,8 +15,6 @@ class CalendarsController < ApplicationController
   private
 
   def plan_params
-    # calendarsが空
-    binding.pry
     params.require(:plan).permit(:date, :plan)
   end
 
