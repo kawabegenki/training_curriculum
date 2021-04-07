@@ -1,8 +1,22 @@
+#命名規則
+#// 頭文字大文字のキャメルケース
+#Sample
+#TechCamp
+
+#// 小文字のスネークケース
+#// 動詞から始めて、何の処理をするメソッドなのかがわかるとGood!
+#get_week
+#get_date
+
+#// 小文字のスネークケース
+#name
+#user_name
+
 class CalendarsController < ApplicationController
 
   # １週間のカレンダーと予定が表示されるページ
   def index
-    getWeek
+    get_week
     @plan = Plan.new
   end
 
@@ -18,8 +32,8 @@ class CalendarsController < ApplicationController
     params.require(:plan).permit(:date, :plan)
   end
 
-  def getWeek
-    wdays = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
+  def get_week
+    week_days = ['(日)','(月)','(火)','(水)','(木)','(金)','(土)']
 
     # Dateオブジェクトは、日付を保持しています。下記のように`.today.day`とすると、今日の日付を取得できます。
     @todays_date = Date.today
@@ -34,13 +48,14 @@ class CalendarsController < ApplicationController
       plans.each do |plan|
         today_plans.push(plan.plan) if plan.date == @todays_date + x
       end
-
+      
       wday_num = Date.today.wday
       if  wday_num >= 7
         wday_num = wday_num -7
       end
 
-      days = { :month => (@todays_date + x).month, :date => (@todays_date+x).day, :plans => today_plans, :wdays => wdays[wday_num]}
+      days = { month: (@todays_date + x).month, date:(@todays_date+x).day, plans: today_plans, wdays:week_days[wday_num]}
+
       @week_days.push(days)
     end
 
